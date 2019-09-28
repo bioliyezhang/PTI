@@ -1,0 +1,2 @@
+mutation_id	a,b,d	c	a,d	b	a	d	driver_gene	
+8_95459586_95459586	0	1	0	0	1	0	.	
