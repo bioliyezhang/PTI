@@ -1,0 +1,5 @@
+mutation_id	Met2,Met3,Met4	Prim	Met2,Met4	Met3	Met2	Met4	driver_gene	
+2_220412355	0	0	0	1	1	0	.	
+5_140590506	0	0	0	1	1	0	.	
+11_46747445	0	0	0	1	1	0	.	
+14_101004749	0	0	0	1	0	1	.	

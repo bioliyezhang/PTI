@@ -1,0 +1,4 @@
+mutation_id	Met1,Met2,Met3	Prim	Met2,Met3	Met1	Met2	Met3	driver_gene	
+13_109672111	0	1	1	0	0	0	.	
+20_45891082	0	1	0	1	0	0	.	
+12_11546618	0	0	0	1	0	1	.	

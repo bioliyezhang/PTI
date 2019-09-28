@@ -1,0 +1,3 @@
+mutation_id	Met1,Met2,Met4	Met5,Met6	Met1,Met4	Met2	Met1	Met4	Met5	Met6	driver_gene	
+X_151900019	0	1	1	0	0	0	0	0	.	
+8_69358589	0	0	0	0	1	0	0	1	.	

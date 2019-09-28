@@ -1,0 +1,6 @@
+mutation_id	Met1,Met3,Met4,Met5	Met2	Met1,Met4,Met5	Met3	Met4,Met5	Met1	Met4	Met5	driver_gene	
+2_113999210	0	1	0	1	0	1	0	1	.	
+3_179138708	0	1	0	0	1	0	0	0	.	
+3_195515382	0	1	0	1	0	0	0	0	.	
+7_154747257	0	1	0	1	0	0	1	0	.	
+8_101730362	0	0	0	1	1	0	0	0	.	

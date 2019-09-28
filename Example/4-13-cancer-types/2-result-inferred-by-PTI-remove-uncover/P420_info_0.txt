@@ -1,0 +1,2 @@
+mutation_id	Met2,Met3,Prim	Met1	Met2,Met3	Prim	Met2	Met3	driver_gene	
+17_5085647	0	1	0	1	1	0	.	
