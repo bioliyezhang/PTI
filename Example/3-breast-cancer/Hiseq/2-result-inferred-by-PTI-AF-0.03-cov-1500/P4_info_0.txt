@@ -1,0 +1,2 @@
+mutation_id	M1,M2	P1	M1	M2	driver_gene	
+17_66041948_66041948_T_G	0	1	0	1	.	
