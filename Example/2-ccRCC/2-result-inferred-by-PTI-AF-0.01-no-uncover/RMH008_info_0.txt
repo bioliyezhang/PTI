@@ -1,0 +1,1 @@
+mutation_id	R4min,R5,R6dom,R7,R8	R1,R2,R3,R4dom,R6min	R4min,R5,R6dom,R7	R8	R4min	R5	R6dom	R7	R3,R6min	R3	R6min	R1	R2	R4dom	driver_gene	
