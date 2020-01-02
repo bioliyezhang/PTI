@@ -1,8 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #The script builds an evolutionary history of clones by sharing mutations between samples.
-#You can run the script by entering the following command at the command line.
-	# python <script name> <path of input files> <the uniq patient>
 
 import os
 import re
@@ -32,25 +30,6 @@ def get_driver_gene_path():
     '''
     current_path = os.path.dirname(os.path.realpath(__file__))
     return current_path
-# script_path=sys.argv[0]
-# driver_gene_path='.'
-# if (script_path[:2]=='./') or (script_path=='PTI.py'):
-# 	driver_gene_path=os.getcwd()
-# 	if '/' in driver_gene_path:
-# 		if (len(script_path.split('/'))>=3):
-# 			driver_gene_path=driver_gene_path+'/'+script_path[2:-6]
-# 		else:
-# 			driver_gene_path=driver_gene_path+'/'
-# 	else:
-# 		if (len(script_path.split('\\'))>=3):
-# 			driver_gene_path=driver_gene_path+'\\'+script_path[2:-6]
-# 		else:
-# 			driver_gene_path=driver_gene_path+'\\'
-# else:
-# 	print('step2')
-# 	if ('/' in script_path) or ("\\" in script_path):
-# 		driver_gene_path=script_path[:-6]
-#print('driver_path: '+str(driver_gene_path))
 
 
 AF=''
@@ -64,7 +43,11 @@ for para,value in opts:
 	if para in ('-o','--output'):
 		file_path_out=value
 print('AF: '+str(AF))
+if file_path[-len(os.path.sep):]==os.path.sep:
+	file_path=file_path[:-len(os.path.sep)]
 print('file_path: '+str(file_path))
+if file_path_out[-len(os.path.sep):]==os.path.sep:
+	file_path_out=file_path_out[:-len(os.path.sep)]
 print('file_path_out: '+str(file_path_out))
 
 def fact(n):
@@ -96,61 +79,19 @@ def search_gene(a,b):
 						gene_list.append(gene)
 	count_gene=len(gene_list)
 	gene_list.append(count_gene)
-	return gene_list
-# def search_gene(a,b):
-# 	gene_list=[]
-# 	for mut in a:#read a mutation
-# 		for gene_key in all_mutation.keys():#annota gene
-# 			if mut.split('_')[0]==gene_key.split('_')[0] :#same chromosome
-# 				#snp
-# 				if int(mut.split('_')[1])==int(mut.split('_')[2]) and int(gene_key.split('_')[1])<=int(mut.split('_')[1])<=int(gene_key.split('_')[2]):
-# 					gene_name=all_mutation[gene_key]
-# 					if gene_name in driver_gene.keys():
-# 						if b=='FALSE': 
-# 							if gene_name not in gene_list:
-# 								gene_list.append(gene_name)
-# 						else:
-# 							gene_name=gene_name+':'+mut
-# 							if gene_name not in gene_list:
-# 								gene_list.append(gene_name)
-# 				#indel
-# 				if int(mut.split('_')[1])!=int(mut.split('_')[2]):
-# 					if int(gene_key.split('_')[1])<=int(mut.split('_')[1])<=int(gene_key.split('_')[2]):
-# 						gene_name=all_mutation[gene_key]
-# 						if gene_name in driver_gene.keys():
-# 							if b=='FALSE': 
-# 								if gene_name not in gene_list:
-# 									gene_list.append(gene_name)
-# 							else:
-# 								gene_name=gene_name+':'+mut
-# 								if gene_name not in gene_list:
-# 									gene_list.append(gene_name)
-# 					if int(gene_key.split('_')[1])<=int(mut.split('_')[2])<=int(gene_key.split('_')[2]):
-# 						gene_name=all_mutation[gene_key]
-# 						if gene_name in driver_gene.keys():
-# 							if b=='FALSE': 
-# 								if gene_name not in gene_list:
-# 									gene_list.append(gene_name)
-# 							else:
-# 								gene_name=gene_name+':'+mut
-# 								if gene_name not in gene_list:
-# 									gene_list.append(gene_name)
-# 	count_gene=len(gene_list)
-# 	gene_list.append(count_gene)
-# 	return gene_list								
+	return gene_list							
 									
 #.................................................find best branch..........................
 def xunhuan(a):
-	num=1#test first struct: 1:(n-1)
+	num=1
 	global first_1
-	first_1={}#judge which struct is good?
+	first_1={}
 	global first_3
-	first_3={}#all structure and count
+	first_3={}
 	global first_4
-	first_4={}#all structure and jioaji
-	first_6={}#存放每种分支的具有最大共有突变的结构信息
+	first_4={}
+	first_6={}
 	while num<=len(a)/2:
-		#print(str(num)+' xunhuan:')
 		struct_pattern=str(num)+'-'+str(len(a)-num)
 		DIC={}#including structure info: Cmn information for a specific branch split
 		cishu=int(Cmn(len(a),num))
@@ -185,8 +126,7 @@ def xunhuan(a):
 					if NUM==1:
 						jiaoji_1=dic[item6]
 					jiaoji_1=[val for val in jiaoji_1 if val in dic[item6]]#sample mutation which are removed
-				#print(item+' jiaoji-mutation: '+str(len(jiaoji_1)))
-				#print(str(len(jiaoji_1))+str(search_gene(jiaoji_1,'FALSE')))
+
 			i=0
 			no_item=','
 			a_1.sort()
@@ -196,8 +136,7 @@ def xunhuan(a):
 				if i==1:
 					jiaoji_2=dic[item1]
 				jiaoji_2 = [val for val in jiaoji_2 if val in dic[item1]]#sample mutation which are retained; also is big group
-			#print(no_item[2:]+' jiaoji-mutation:'+str(len(jiaoji_2)))
-			#print(str(len(jiaoji_2))+str(search_gene(jiaoji_2,'FALSE')))
+
 			struct_name=no_item[2:]
 			struct_share_mut=len(jiaoji_2)
 			num_1=str(len(jiaoji_1))+str(search_gene(jiaoji_1,'FALSE'))
@@ -262,9 +201,6 @@ def xunhuan(a):
 					max_data.append(value)
 					#print(key,value)
 				if count>1 and key not in chongfu.keys() and key!=max_data_name and value==max_data_value:
-					# struct_pattern1=struct_pattern+':'+max_data_name
-					# if struct_pattern1 not in first_6.keys():
-					# 	first_6.update({struct_pattern1:max_data_value})
 					chongfu2={}
 					while len(chongfu2.keys())<(fact(len(key.split(',')))-1):
 						list1=key.split(',')
@@ -290,10 +226,6 @@ def xunhuan(a):
 		struct_pattern2=struct_pattern+':'+max_data_name
 		first_1.update({struct_pattern2:ratio})
 		num=num+1
-	#print('structure_pattern:ratio')
-	#print(first_1)
-	#good_struct=max(first_1,key=first_1.get)
-	#print(good_struct)
 	sort_data=sorted(first_1.items(),key = lambda d:d[1],reverse=True) 
 	#print(sort_data)
 	global return_data
@@ -306,8 +238,6 @@ def xunhuan(a):
 			max_data_value=value
 		if value==max_data_value:
 			return_data.append(key)
-			#print(key,value)
-	#print(first_6)
 	for item in return_data:
 		identify=item.split(':')[0]
 		for item1 in first_6.keys():
@@ -338,12 +268,11 @@ def xunhuan(a):
 	return_data.sort()
 	return(return_data)
 #split tree
-def split_tree(tree_label_split):#a string
+def split_tree(tree_label_split):
 	new_tree_label=[]
-	#print(tree_label_split)
 	num=0
-	count1=0#统计‘(’
-	count2=0#统计‘)’
+	count1=0
+	count2=0
 	index1=[]
 	new_tree_label=[]
 	while num <len(tree_label_split):
@@ -364,13 +293,11 @@ def split_tree(tree_label_split):#a string
 	#print(new_tree_label)
 	return(new_tree_label)	
 	
-#os.getcwd()
-
 #...........................................299 driver gene........................
 driver_gene_path=get_driver_gene_path()
 print('driver_gene_path: '+driver_gene_path)
 if driver_gene_path!='.':
-	file=open(driver_gene_path+'/299_driverMutationList_Cell_2018.txt','r')
+	file=open(driver_gene_path+os.path.sep+'299_driverMutationList_Cell_2018.txt','r')
 	global driver_gene
 	driver_gene={}
 	lines=file.readlines()
@@ -378,28 +305,7 @@ if driver_gene_path!='.':
 		driver_gene.update({line.rstrip():[]})  #uniq driver gene
 else:
 	print('can not read driver gene file')
-#print('all driver gene: '+str(len(driver_gene.keys())))
 
-#.............................................mutation and gene in annovar....................
-# file1=open('/public/home/wupin/project/1-liver-cancer/3-pyclone/all_mutation_and_gene_from_exonic.txt','r')
-# lines=file1.readlines()
-# global all_mutation
-# all_mutation={}
-# for line in lines[1:]:
-# 	data=line.rstrip().split('\t')
-# 	all_mutation.update({data[0]:[]})
-# 	for item in data[1].split(';'):
-# 		all_mutation[data[0]].append(item)
-
-# file1=open('/public/home/zhaoxj/wupin/Homo_sapiens_GRCh37_87_geneonly.gtf','r')
-# lines=file1.readlines()
-# global all_mutation
-# all_mutation={}
-# for line in lines:
-# 	data=line.rstrip().split('\t')
-# 	region_index=str(data[0])+'_'+str(data[3])+'_'+str(data[4]) #chr_start_end
-# 	gene_item=data[8].split(';')[2].split(' ')[1][1:-1]
-# 	all_mutation.update({region_index:gene_item})
 #...................................................read file...and mutation................................
 
 filelist=os.listdir(file_path)
@@ -431,10 +337,10 @@ for patient in all_patient_ID:
 					dic.update({sample_id:[]})
 				else:
 					print('sample_ID is not uniq!')
-				file=open(file_path+'/'+filename,'r')
+				file=open(file_path+os.path.sep+filename,'r')
 				lines=file.readlines()
 				for line in lines[1:]:
-					data=line.rstrip().split('\t')#[mut_id, var_read, ref_read, gene]
+					data=line.rstrip().split('\t')
 					if int(data[1])+int(data[2])!=0:
 						AF_data=int(data[1])/(int(data[1])+int(data[2]))
 						if AF_data>=float(AF) and data[0].split('_')[0] in all_chr:
@@ -458,7 +364,7 @@ for patient in all_patient_ID:
 		all_data=[]#all_sample_ID
 		sample_shu=0#the number of all samples of this patient
 		sample_index={}#[index:smaple_name]
-		file=open(file_path+'/'+patient+'.txt','r')
+		file=open(file_path+os.path.sep+patient+'.txt','r')
 		lines=file.readlines()
 		data_0=lines[0].rstrip().split('\t')
 		for item in data_0[1:-1]:#sample_id
@@ -506,7 +412,6 @@ for patient in all_patient_ID:
 					else:
 						if split[1] not in all_driver_mutation[split[0]]:
 							all_driver_mutation[split[0]].append(split[1])
-		#check are there some map-driver-gene have two or more uniq mutations?
 		un_uniq_gene=0
 		for key in all_driver_mutation.keys():
 			if len(all_driver_mutation[key])>1:
@@ -515,25 +420,22 @@ for patient in all_patient_ID:
 				un_uniq_gene=un_uniq_gene+1
 		if un_uniq_gene==len(all_driver_mutation.keys()):
 			print('every gene refer to a uniq gene')
-		#........................................................all jiaoji.................
+		#........................................................................
 		i=0
 		for item in dic.keys():
 			i=i+1
 			if i==1:
 				all_jiaoji=dic[item]
 			all_jiaoji = [val for val in all_jiaoji if val in dic[item]]
-		#print('all-jiaoji_mut: '+str(len(all_jiaoji))+str(search_gene(all_jiaoji,'FALSE')))
 		root_node=str(len(all_jiaoji))+'['+str(search_gene(all_jiaoji,'False')[-1])+'-'
 		for item in search_gene(all_jiaoji,'False')[:-1]:
 			root_node=root_node+item+';'
 		root_node=root_node[:-1]+']'
-		#print('root_node: '+root_node)
-		#.............................................every sample remove all-jiaoji......................
 		for item in dic.keys():
 			for item1 in all_jiaoji:
 				dic[item].remove(item1)
-			#print(item+' remove all jiaoji: '+str(len(dic[item])))
-		#....................................................body......................
+
+		#...............................................body......................
 		dic_baocun={}
 		for item in all_data:
 			dic_baocun.update({item:[]})
@@ -541,17 +443,17 @@ for patient in all_patient_ID:
 			for item_data in dic[item]:
 				dic_baocun[item].append(item_data)
 		global all_DATA
-		all_result_1=[]#存放多个result_1
+		all_result_1=[]
 		global branch_path
-		branch_path=[]#所有分支路径index
+		branch_path=[]
 		global path_string
-		path_string=[]#存放所有条完整路径
+		path_string=[]
 		global final_path_count
 		final_path_count=-1
 		global DIC_result
-		DIC_result={}#存放dic_result,用于后期统计单个SNV在多个分支中出现的情况。
+		DIC_result={}
 		DIC_count=0
-		duli_count=0#刚开始全部为独立分支
+		duli_count=0
 		duli_state='false'
 		chongfu_bianli=0
 		while final_path_count!=len(branch_path) or len(path_string)!=len(branch_path):
@@ -564,12 +466,10 @@ for patient in all_patient_ID:
 					dic[item].append(item_data)
 			all_DATA=[]
 			all_DATA.append(all_data)
-			result_1=[]#存放每个节点信息，用于后期建树
-			path=','#一个分支路径
-			dic_result={}#存放每个节点的突变信息，用于后期统计单个SNV在多个分支中出现的情况?????????????????????????????????????
+			result_1=[]
+			path=','
+			dic_result={}
 			for all_item in all_DATA:
-				#print(all_DATA)
-				#print(all_item)
 				dic1={}
 				for item in all_item:
 					dic1.update({item:[]})
@@ -578,7 +478,6 @@ for patient in all_patient_ID:
 						dic1[item].append(item_data)
 				#check if there are any-two sample that do not share any mutation?
 				while len(all_item)>=2:
-					#print(all_item)
 					sample_2={}
 					count2=0
 					cishu2=int(Cmn(len(all_item),2))
@@ -596,8 +495,6 @@ for patient in all_patient_ID:
 					if count2>0:
 						duli_count=duli_count+1	
 						result_all=xunhuan(all_item)
-						#print('first_result')
-						#print(result_all)
 						path_state='false'
 						for result_path in result_all:
 							same_path_count=0
@@ -629,8 +526,6 @@ for patient in all_patient_ID:
 								path_all=len(branch_path_iter)
 								path_count=0
 								while path_count<path_all:
-									#print(path_all)
-									#print(branch_path_iter[path_count])
 									if len(branch_path_iter[path_count].split(';'))==len(path_merge.split(';'))-1 and branch_path_iter[path_count] ==path_merge[:len(branch_path_iter[path_count])] :
 										if  branch_path_iter[path_count] == path_merge[:len(branch_path_iter[path_count])]:
 											if branch_path_iter[path_count] in branch_path:
@@ -638,34 +533,28 @@ for patient in all_patient_ID:
 										if path_merge not in branch_path:
 											branch_path.append(path_merge)
 									path_count=path_count+1			
-						#print('branch_path')
-						#print(branch_path)			
+		
 						for result_all_1 in result_all:
-							#print('result_all_1')
-							#print(result_all_1)
 							if path_state=='false':
 								if path[0]==',':
 									#print('ok1, in branch_path')
 									path_merge=path+';'+result_all_1.split(':')[0]
 									path_merge=path_merge[2:]
-									path_copy_state='FALSE'#这个路径已经走过
+									path_copy_state='FALSE'
 									for path_copy1 in branch_path:
 										if path_copy1[-3:]!='end' and path_merge==path_copy1[:len(path_merge)] :
-											#print(path_copy1)
 											path=path_merge
-											path_copy_state='TRUE'#这个路径还没走过
+											path_copy_state='TRUE'
 											break
 									if path_copy_state=='TRUE':
 										break
 								else:
-									#print('ok2, in branch_path')
 									path_merge=path+';'+result_all_1.split(':')[0]
-									path_copy_state='FALSE'#这个路径已经走过
+									path_copy_state='FALSE'
 									for path_copy1 in branch_path:
 										if path_copy1[-3:]!='end' and path_merge==path_copy1[:len(path_merge)] :
-											#print(path_copy1)
 											path=path_merge
-											path_copy_state='TRUE'#这个路径还没走过
+											path_copy_state='TRUE'
 											break
 									if path_copy_state=='TRUE':
 										break
@@ -674,39 +563,32 @@ for patient in all_patient_ID:
 									#print('ok3, in branch_path')
 									path_merge=path+';'+result_all_1
 									path_merge=path_merge[2:]
-									path_copy_state='FALSE'#这个路径已经走过
+									path_copy_state='FALSE'
 									for path_copy1 in branch_path:
 										if path_copy1[-3:]!='end' and path_merge==path_copy1[:len(path_merge)] :
-											#print(path_copy1)
 											path=path_merge
-											path_copy_state='TRUE'#这个路径还没走过
+											path_copy_state='TRUE'
 											break
 									if path_copy_state=='TRUE':
 										break
 								else:
-									#print('ok4, in branch_path')
 									path_merge=path+';'+result_all_1
-									path_copy_state='FALSE'#这个路径已经走过
+									path_copy_state='FALSE'
 									for path_copy1 in branch_path:
 										if path_copy1[-3:]!='end' and path_merge==path_copy1[:len(path_merge)] :
-											#print(path_copy1)
 											path=path_merge
-											path_copy_state='TRUE'#这个路径还没走过
+											path_copy_state='TRUE'
 											break
 									if path_copy_state=='TRUE':
 										break
-						#分割返回的结果，从first_3字典中输出其对应的结果：
-						#print the pair which have high rate
 						result=result_all_1
 						result_split=result.split(':')
 						result_split=result_split[1].split(',')
-						first='.'#循环结果中的structrure_1
+						first='.'
 						#print('max_pair:')
 						for item_split in result_split:
 							first=first+','+item_split
 						first=first[2:]
-						#print('first: '+first)
-						#print(return_1[2:]+': '+str(first_3[return_1[2:]]))
 						return_2=[]
 						for item_split in all_item:
 							if item_split not in result_split:
@@ -722,16 +604,12 @@ for patient in all_patient_ID:
 							if da[2:] not in return_2_zuhe:
 								return_2_zuhe.append(da[2:])
 						#print(return_2_zuhe)
-						second='.'#循环结果中的structrure_2
+						second='.'
 						for item3 in return_2_zuhe:
 							if item3 in first_3.keys():
 								second=item3
-								#print(item3+': '+str(first_3[item3]))
 								break
-						#print(second)
-						#添加所有组合信息，以生成newick文件
-						#print(first_3[first])
-						#print(first_4[first])
+
 						if int(first_3[first].split('[')[0])!=len(first_4[first]):
 							print('false')
 						result_item_1=first+':'+str(len(first_4[first]))+'['+str(search_gene(first_4[first],'False')[-1])+'-'
@@ -740,8 +618,6 @@ for patient in all_patient_ID:
 						result_item_1=result_item_1[:-1]+']'
 						result_1.append(result_item_1)
 						dic_result.update({first:first_4[first]})
-						#print('second: '+second)
-						#print(first_4[second])
 						result_item_2=second+':'+str(len(first_4[second]))+'['+str(search_gene(first_4[second],'False')[-1])+'-'
 						for item in search_gene(first_4[second],'False')[:-1]:
 							result_item_2=result_item_2+item+';'
@@ -769,17 +645,14 @@ for patient in all_patient_ID:
 								if i==1:
 									jiaoji=dic1[item_1]
 								jiaoji=[val for val in jiaoji if val in dic1[item_1]]
-							#print('jiaoji: '+str(len(jiaoji))+str(search_gene(jiaoji,'FALSE')))
+
 							for item in dic1.keys():
 								for item1 in jiaoji:
 									dic1[item].remove(item1)
-							#print(dic.keys())
+
 							for item in dic1.keys():
 								for item1 in jiaoji:
 									dic[item].remove(item1)
-							#for item in dic1.keys():
-								#print(item+' mutation-after-remove-jiaoji: ')
-								#print(dic1[item])
 						else:
 							group1=[]
 							group2=[]
@@ -794,13 +667,11 @@ for patient in all_patient_ID:
 								if i==1:
 									jiaoji=dic[item_1]
 								jiaoji=[val for val in jiaoji if val in dic[item_1]]
-							#print(group1)
-							#print('group1-jiaoji: '+str(len(jiaoji))+str(search_gene(jiaoji,'FALSE')))
+
 							for item in group1:
 								for item1 in jiaoji:
 									dic[item].remove(item1)
-							#for item in dic.keys():
-								#print(item+' mutation-after-remove-jiaoji: '+str(len(dic[item]))+str(search_gene(dic[item],'FALSE')))
+
 							for item in all_item:
 								if item not in result_split_split:
 									group2.append(item)
@@ -811,19 +682,16 @@ for patient in all_patient_ID:
 								if i==1:
 									jiaoji=dic[item_1]
 								jiaoji=[val for val in jiaoji if val in dic[item_1]]
-							#print(group2)
-							#print('group2-jiaoji: '+str(len(jiaoji))+str(search_gene(jiaoji,'FALSE')))
+
 							for item in group2:
 								for item1 in jiaoji:
 									dic[item].remove(item1)
-							#for item in dic.keys():
-								#print(item+' mutation-after-remove-jiaoji: '+str(len(dic[item]))+str(search_gene(dic[item],'FALSE')))			
+			
 							all_DATA.append(group1)
 							all_DATA.append(group2)
-							#print(all_DATA)
+
 							break
 					else:
-						#print('there are samples that do not share mut')
 						for item in all_item:
 							result_item =item+':'+str(len(dic1[item]))+'['+str(search_gene(dic1[item],'False')[-1])+'-'
 							for item0 in search_gene(dic1[item],'False')[:-1]:
@@ -856,14 +724,11 @@ for patient in all_patient_ID:
 			for path_data in branch_path:
 				if path_data.split(';')[-1]=='end' or path_data[0].isalpha():
 					final_path_count=final_path_count+1
-					#print(path_data)
-			#print(final_path_count)
+
 			if duli_state=='false':
 				if path not in path_string and path[-3:]=='end':
 					path_string.append(path)
-					#print(path)
-					#print(result_1)
-					#print(dic_result)
+
 					DIC_result.update({DIC_count:dic_result})
 					DIC_count=DIC_count+1
 					all_result_1.append(result_1)
@@ -879,26 +744,23 @@ for patient in all_patient_ID:
 		print('path_string: '+str(len(path_string)))
 		print('all_result: '+str(len(all_result_1)))
 		print('DIC_result: '+str(len(DIC_result.keys())))
-		#print('LOOK!')
 		for item in all_result_1:
 			item_copy = item[:]
-			#print(item)
+
 			for data in item_copy:
 				if int(data.split(':')[1].split('[')[0])==0 and len(data.split(':')[0].split(','))>1:
 					item.remove(data)
-		#生成input文件
-		#每个node的存储方式: node:10[2-gene1,gene2]
 		all_result_weight=[]
 		for item in all_result_1:
 			weight=0
-			#print(item)
+
 			for data in item:
 				length=len(data.split(':')[0].split(','))
 				data=data.split(':')[1].split('[')[0]
 				if length>=2:
 					weight=weight+length*int(data)
 			all_result_weight.append(weight)
-		#print(all_result_weight)
+
 		i=0
 		max_weight_data=0
 		while i <len(all_result_weight):
@@ -907,7 +769,6 @@ for patient in all_patient_ID:
 			if all_result_weight[i]>max_weight_data:
 				max_weight_data=all_result_weight[i]
 			i=i+1
-		#print('max_weight_data: '+str(max_weight_data))
 		result_max_weight=[]
 		if max_weight_data==0:
 			DIC_result_max_weight={}
@@ -920,22 +781,18 @@ for patient in all_patient_ID:
 			i1=0
 			while i <len(all_result_weight):
 				if all_result_weight[i]==max_weight_data:
-					#print(i)
-					#print(all_result_2[i])
 					all_result_1[i].sort()
 					if all_result_1[i] not in result_max_weight:
 						result_max_weight.append(all_result_1[i])
 						DIC_result_max_weight.update({i1:DIC_result[i]})
-						#print(DIC_result[i])
+
 						i1=i1+1
 				i=i+1
-		#print('result with max weight: '+str(len(result_max_weight)))
-		#print(result_max_weight)
+
 		tree_count=0
 		for result_1 in result_max_weight:
 			dic_result=DIC_result_max_weight[tree_count]
-			#print(dic_result)
-			dic_final={}#存放所有分支中mut是否多次出现，并生成文件保存
+			dic_final={}
 			ll=[]#header
 			ll.append('mutation_id')
 			for item in dic_result.keys():
@@ -1007,12 +864,11 @@ for patient in all_patient_ID:
 			#print(tree_structure)
 			#.......................................plot.........................................
 			if tree_count==0 or (tree_count>0 and final_result!=first_final):
-				out=open(file_path_out+'/'+patient+'_info_'+str(tree_count)+'.txt','w')
+				out=open(file_path_out+os.path.sep+patient+'_info_'+str(tree_count)+'.txt','w')
 				for item in ll:
 					out.write(str(item))
 					out.write('\t')
 				out.write('\n')
-				#print(dic_final)
 				for item in dic_final.keys():
 					count=0
 					for data in dic_final[item][1:-1]:
@@ -1030,7 +886,6 @@ for patient in all_patient_ID:
 				tree.rooted = True
 				tree.name=patient
 				tree = tree.as_phyloxml()
-				#添加label
 				tree.root.branch_labels=root_node
 				#global tree_label
 				if ('[' in final_result[1:].split(':')[-1]) and (']' in final_result[1:].split(':')[-1]):
@@ -1040,29 +895,19 @@ for patient in all_patient_ID:
 				tree_label_1=[str(i) for i in tree_label]
 				tree_labels = ':'.join(tree_label_1)
 				tree_label_split=tree_labels[:-1]
-				#print(tree_label_split)
 				global new_tree_labels
 				new_tree_labels=split_tree(tree_label_split)
-				#print('new_tree_labels:')
-				#print(new_tree_labels)
 				original_count=len(new_tree_labels)
 				original_count1=original_count
-				#print(new_tree_labels)
 				num=0
 				for item in new_tree_labels:
-					#print(item)
-					#print(item.split(':')[-1])
 					if num <=original_count-1:
 						tree.clade[num].branch_labels=item.split(':')[-1]
-						#print('tree.clade[num].branch_labels='+item.split(':')[-1]+': '+str(num))
 						if ('(' in item) or (')' in item):
 							new_item_1=[str(i) for i in item.split(':')[:-1]]
 							new_item_split=':'.join(new_item_1)
 							new_item_split=new_item_split[1:-1]
-							#print(new_item_split)
 							new_items=split_tree(new_item_split)
-							#print('pinjie')
-							#print(new_items)
 							index=0
 							for branch in new_items:
 								branch=str(num)+'*'+str(index)+'*'+branch
@@ -1088,12 +933,8 @@ for patient in all_patient_ID:
 							new_item_1=[str(i) for i in item.split(':')[:-1]]
 							new_item_split=':'.join(new_item_1)
 							new_item_split=new_item_split.split('*')[-1]
-							#print(new_item_split)
 							new_item_split=new_item_split[1:-1]
-							#print(new_item_split)
 							new_items=split_tree(new_item_split)
-							#print('pingjie')
-							#print(new_items)
 							index=0
 							for branch1 in new_items:
 								branch1=str(branch_count_merge)+'*'+str(index)+'*'+branch1
@@ -1104,7 +945,7 @@ for patient in all_patient_ID:
 				plt.rcParams['lines.linewidth'] = 0.7
 				Phylo.draw(tree,do_show=False,branch_labels=lambda c: c.branch_labels)	
 				#Phylo.draw(tree,do_show=False,branch_labels=lambda c: int(c.branch_length))
-				plt.savefig(file_path_out+'/'+patient+'_tree_'+str(tree_count)+'.pdf',dpi=500)
+				plt.savefig(file_path_out+os.path.sep+patient+'_tree_'+str(tree_count)+'.pdf',dpi=500)
 				plt.close()
 				tree_count=tree_count+1
 		print(patient+' ok!')
