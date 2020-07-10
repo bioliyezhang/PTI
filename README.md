@@ -76,5 +76,8 @@ MIT License
 
 For help running the program or any questions/suggestions/bug reports, please contact wupin@shanghaitech.edu.cn and zhangly@shanghaitech.edu.cn
 
-
+### reference
+Front Genet. 2020 Feb 7;10:1371.  doi: 10.3389/fgene.2019.01371.  eCollection 2019.
+Phylogenetic Tree Inference: A Top-Down Approach to Track Tumor Evolution. Pin Wu, Linjun Hou, Yingdong Zhang, Liye Zhang
+https://www.frontiersin.org/articles/10.3389/fgene.2019.01371/full
 
