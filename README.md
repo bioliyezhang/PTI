@@ -74,7 +74,7 @@ MIT License
 
 ### Support
 
-For help running the program or any questions/suggestions/bug reports, please contact wuping@shanghaitech.edu.cn and zhangly@shanghaitech.edu.cn
+For help running the program or any questions/suggestions/bug reports, please contact wupin@shanghaitech.edu.cn and zhangly@shanghaitech.edu.cn
 
 
 
