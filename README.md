@@ -22,7 +22,7 @@ PTI has only one parameter to set.
 
 ### Input File Types
 
-PTI can accept two input file types, one is ‘one sample per file’, the other is ‘binomial matrix’, also known as ‘0-1 matrix’. The number of mutations used to reconstruct the phylogenetic tree has a significant impact on the accuracy of the tree structure. We recommend that the number of mutations used to build a tree for each tumor sample is no less than 30. However, while a large number of mutations increase the accuracy of the tree topology, it takes more runtime. Therefore, in the case of a large number of mutations, you can use the AF parameters (default is 0.1) which is calculated by the count of mutant reads and reference reads to filter the mutations to improve the speed of the PTI.
+PTI can accept two input file types, one is ‘one sample per file’, the other is ‘binary matrix’, also known as ‘0-1 matrix’. The number of mutations used to reconstruct the phylogenetic tree has a significant impact on the accuracy of the tree structure. We recommend that the number of mutations used to build a tree for each tumor sample is no less than 30. However, while a large number of mutations increase the accuracy of the tree topology, it takes more runtime. Therefore, in the case of a large number of mutations, you can use the AF parameters (default is 0.1) which is calculated by the count of mutant reads and reference reads to filter the mutations to improve the speed of the PTI.
 
 1. **One sample per file**
 
@@ -37,7 +37,7 @@ PTI can accept two input file types, one is ‘one sample per file’, the other
    11_77961_77961_C_T            474                15317              GAB2
    ```
 
-2. **Binomial matrix**
+2. **Binary matrix**
 
    Each patient only needs one binary matrix and its elements can only be 0 or 1. The first column of the file records unique mutation id. The middle columns record whether the sample has a certain mutation. If the sample has a certain mutation, it is recorded as 1, otherwise it is recorded as 0. The last column is about the genes involved in the mutation. Since the binomial matrix does not contain the count of mutant reads and reference reads, the PTI command line does not contain restrictions on AF.
 
